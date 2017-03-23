@@ -14,7 +14,6 @@ import { BernieRouting } from './bernie.routing';
 import { ClaimEffects } from '../core/store/claim/claim.effects';
 import { RebuttalEffects } from '../core/store/rebuttal/rebuttal.effects';
 import { ClaimRebuttalEffects } from '../core/store/claim-rebuttal/claim-rebuttal.effects';
-import { EntityEffects } from '../core/store/entity/entity.effects';
 
 @NgModule({
   declarations: [
@@ -32,8 +31,7 @@ import { EntityEffects } from '../core/store/entity/entity.effects';
     EffectsModule.run(ClaimRebuttalEffects)
   ],
   providers: [
-    DataService,
-    EntityEffects
+    DataService
   ]
 })
 export class BernieModule { }

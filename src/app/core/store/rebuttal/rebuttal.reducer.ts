@@ -4,35 +4,25 @@ import 'rxjs/add/operator/let';
 import { Observable } from 'rxjs/Observable';
 
 import { Rebuttal, initialRebuttal } from './rebuttal.model';
-import * as actions from './rebuttal.actions';
 import { Entities, initialEntities } from '../entity/entity.model';
+import { actions, ActionClasses } from './rebuttal.actions';
+import { slices } from '../util';
+import * as functions from '../entity/entity.functions';
+import { typeFor } from '../util';
 
 export function reducer(state: Entities<Rebuttal> = initialEntities<Rebuttal>({},
-  'Rebuttal', actions, initialRebuttal), action: actions.Actions): Entities<Rebuttal> {
-
-  let edits = {};
-  switch (action.type) {
-    case state.actionTypes.MakeRebuttalEditable:
-      edits = { editing: true }; break;
-    case state.actionTypes.CancelChanges:
-    case state.actionTypes.SaveRebuttal:
-      edits = { editing: false }; break;
-    default:
-      edits = {};
-  }
-  action.payload && (action.payload = Object.assign(action.payload, edits));
+  slices.REBUTTAL, actions, initialRebuttal), action: ActionClasses<Rebuttal>): Entities<Rebuttal> {
 
   switch (action.type) {
-    case state.actionTypes.Add:
-    case state.actionTypes.AddSuccess:
-    case state.actionTypes.LoadSuccess:
-      return state.addLoadEntity(action);
-    case state.actionTypes.MakeRebuttalEditable:
-    case state.actionTypes.SaveRebuttal:
-    case state.actionTypes.CancelChanges:
-      return state.updateEntity(action);
-    default:
+    case typeFor(slices.REBUTTAL, actions.ADD):
+    case typeFor(slices.CLAIM, actions.ADD_SUCCESS):
+    case typeFor(slices.CLAIM, actions.LOAD_SUCCESS):
+      return functions.addLoadEntity<Rebuttal>(state, <any>action);
+    case typeFor(slices.CLAIM, actions.UPDATE):
+      return functions.update<Rebuttal>(state, <any>action);
+    default: {
       return state;
+    }
   }
   // checkout https://github.com/omnidan/redux-undo for undo features
 

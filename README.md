@@ -4,9 +4,9 @@
 
 [Live Demo](http://great-big-angular2-example.herokuapp.com)
 
-## Background and Motivation
+# Background and Motivation
 
-This project is an attempt by an unemployed non-college-student to infer from available demos what the codebase might
+This project is an attempt by an unemployed DIY-student to infer from available demos what the codebase might
 look like for the real-world, commercial codebases that you don't get to see until you are hired by a real company and
 sign and NDA.
 
@@ -14,21 +14,25 @@ The rationale behind this is pretty simple...
 
     1. Real, complete code examples are better than docs, lessons and Gitter Q&A. And MUCH better 
     than ellipses (...).
+
     2. If you want a job making commercial-grade code, you should study commercial-grade code,
-    not tutorial-grade code. Anything you learn in a tutorial must sadly be approached with caution 
+    not tutorial-grade code. Anything you learn in a tutorial must be approached with caution 
     because corners have probably been cut, it's probably been simplified and it probably doesn't 
     show you the exact way anyone does it on a real job. The difference between exact and almost 
     exact is huge. Tutorials show you how you *can* use a feature of the technology but often they 
-    do so in situations when in real life you would not do things that way. I call these cases 
-    instructional red herrings. Instructional Red Herrings are very expensive, timewise. It's just 
-    as important to know how to use a technology's features as it is to know when.
+    do so in situations when in real life you would not do things that way. This can cost a lot of 
+    time. It's just as important to know how to use a technology's features as it is to know when.
+
     3. If you want to know how fast a big Angular app will build, run and test before investing
     the time to learn Angular - and you should - then you need source code for a big app before
     you even write Hello World.
+
     4. If you want to know the complexity limits a technology will place on your app before you
     commit to using it, there's no better way than to see a complex example made with that technology.
-    5. Making architectural decisions or convention decisions is a whole lot easier when you have
-    a complete application with all of its edge cases to illuminate the consequences.
+
+    5. It's a whole lot easier to vet an idea or accept an approach others have taken when you have
+    a complete application with all of its edge cases to show you what needs to be accommodatedd. 
+    By containing many edge cases, a big application will quickly answer the common learner's question: "Why isn't this done the easy way I think it should be done?", or "What if we tried X instead?"
 
 Hopefully, when the project is done it will make the learning process for others much easier and prepare them to
 make real things rather than instructional ones. I expect it to reduce the time to implement your own real
@@ -41,19 +45,20 @@ A huge thanks to those who created the example demos from which I put together t
 
 To make this big app from the small ones, I took these projects and integrated/restructured/restyled their code
 according to the following prioritization. Disagreements in approach between two influences are resolved by the
-lower influence yielding to the higher one:
+lower authority yielding to the higher one:
 
 1. [Angular Style Guide](https://angular.io/docs/ts/latest/guide/style-guide.html) by Google
 2. [Tour of Heroes (ngModules, Routing, App Specs, HTTP, Server Communication versions)](https://github.com/dancancro/tour-of-heroes-versions) by Google
 3. [Angular CLI](https://github.com/angular/angular-cli) by Google and the community
-4. [ngrx example app - book collection](https://github.com/ngrx/example-app) by [@MikeRyan52](https://github.com/MikeRyan52)
-5. [angular-seed-advanced](https://github.com/NathanWalker/angular-seed-advanced) by Minko Gechev + Nathan Walker + community
-6. [ng2-state-talk - drag/editable notes](https://github.com/JavascriptMick/ng2-state-talk) by [@JavascriptMick](https://github.com/JavascriptMick) 
-7. [rangle-starter Angular 2 with TypeScript and Redux version - counter](https://www.npmjs.com/package/rangle-starter) by [@SethDavenport](https://github.com/SethDavenport)
+4. [Redux Docs](http://redux.js.org/) Redux.org
+5. [ngrx example app - book collection](https://github.com/ngrx/example-app) by [@MikeRyan52](https://github.com/MikeRyan52)
+6. [angular-seed-advanced](https://github.com/NathanWalker/angular-seed-advanced) by Minko Gechev + Nathan Walker + community
+7. [ng2-state-talk - drag/editable notes](https://github.com/JavascriptMick/ng2-state-talk) by [@JavascriptMick](https://github.com/JavascriptMick) 
+8. [rangle-starter Angular 2 with TypeScript and Redux version - counter](https://www.npmjs.com/package/rangle-starter) by [@SethDavenport](https://github.com/SethDavenport)
 
 In addition to the features from these demos, I added one of my own. I replaced
 
-8. [this other project](http://www.bernierebuttals.org) 
+9. [this other project](http://www.bernierebuttals.org) 
 
 which was made with JQuery and Google Scripts. The data is 
 contained in [this Google Sheet](https://docs.google.com/spreadsheets/d/1RdIhMdNCRJ-xtl6IgbT2SdChtLIYW8VXeloq7rR1lqY/edit#gid=50602236) 
@@ -61,7 +66,7 @@ and served as JSON by a Google script.
 
 See the [Angular Change log](https://angular.io/docs/ts/latest/guide/change-log.html) for updates to the Angular team's opinions.
 
-## My Innovations
+# My Innovations
 
 While the goal of the project is to combine the wisdom of different experts, nobody can resist introducing improvements when there's 
 no obvious case against doing so. So you will see a couple of practices in this project that came from my head rather than the sources 
@@ -94,14 +99,7 @@ I use `auth.guard.ts` instead of `auth-guard.service.ts`. I use `books.routing.t
 
 That's it. It shouldn't be too hard to remember these, and in return you will have consistent, short, expressive file names.
 
-## Blocking Angular bugs
-
-| Issue | Description | Features |
-| :-- | :-- | :-- |
-| [14480](https://github.com/angular/angular/issues/14480) | Angular 2 relative pathing from siblings doesn't work | Compose Message box on Crisis Center and login success routing |
-| [14201](https://github.com/angular/angular/pull/14201) | Duplicate instantiation of lazy loaded modules | ngrx Effects |
-
-## Prerequisites
+# Prerequisites
 
 You will need to have [Git](https://git-scm.com/) and [Node.js + NPM](http://nodejs.org) installed on your machine. 
 
@@ -114,7 +112,7 @@ If you want to Dockerize your app, go [here](http://www.dzurico.com/dockerize-an
 install [PhantomJS](http://phantomjs.org/download.html). It's used by Docker.
 
 
-## Make it go
+# Make it go
 
 This is a standard angular-cli generated application so you can use all of the ng XXX commands to manage the application.
 
@@ -149,7 +147,39 @@ please let me know. I know how the little things are what cause the problems and
 
 Set Config var NPM_CONFIG_PRODUCT to false on the Settings tab of your app admin page.
 
-## Demonstrations and Features
+## Blocking Dependency Issues
+
+| Issue | Description | Features |
+| :-- | :-- | :-- |
+| [14480](https://github.com/angular/angular/issues/14480) | Angular 2 relative pathing from siblings doesn't work | Compose Message box on Crisis Center and login success routing |
+| [14201](https://github.com/angular/angular/pull/14201) | Duplicate instantiation of lazy loaded modules | ngrx Effects |
+| [3781](https://github.com/angular/angular-cli/issues/3781) | Cannot read property 'newLine' of undefined | Travis build |
+
+# FAQ
+
+## 1) It seems like there is a lot of boilerplate and duplicate code per store slice. Why not have the Action Types be created dynamically by combining the store slice names and action names to make them globally unique?
+
+The action types have to be statically defined so that the Typescript compiler will catch problems at coding time. For example, take this code
+```
+export function reducer(state: Entities<Book> = initialEntities<Book>({}, slices.BOOK, actions, {}),
+  action: book.Actions | collection.Actions): Entities<Book> {
+  switch (action.type) {
+    ...
+
+```
+`action: book.Actions | collection.Actions` means that `action` must be an object of a class in this union of two unions of class definitions
+
+That gives us two checks: `action.type` must be a string value among the union of `string` values of the `type` properties of the classes that `action` can be. If any
+of the case values are not among this union of string values, Typescript will point that out to you.
+And same with `action.payload`. It must be an object with the structure of the payload property of one of the classes that `action` can be.
+
+## 2) Why isn't the `server` directory under /src? It contains source code.
+
+This directory is not located inside /src because if it were there then the 
+front-end server which watches /src would restart after any change to back-end code. That can probably be fixed by configuring which I haven't done.
+
+
+# Demonstrations and Features
 
 | **Developer Experience** |[great big angular2 example](https://github.com/dancancro/great-big-angular2-example)|[Angular-kitchen-sink](https://github.com/born2net/Angular-kitchen-sink)|[angular-seed-advanced](https://github.com/NathanWalker/angular-seed-advanced)|[ngrx example app](https://github.com/ngrx/example-app/issues/100#issuecomment-275451726)|[angular2-redux-starter](https://github.com/rangle/angular2-redux-starter)|[angular2-webpack-starter](https://github.com/AngularClass/angular2-webpack-starter)|
 |:------ | :------: | :------: | :------: | :------: | :------: | :------: |

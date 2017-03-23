@@ -1,8 +1,16 @@
-import { getActionTypes } from '../util';
+// import { getActionTypes } from '../util';
+import { Branch } from '../branch/branch.model';
+import { slices } from '../util';
 
 export interface BooksPageLayout {
   showSidenav: boolean;
+  query: string
 };
+
+export const initialBooksPageLayout = {
+  showSidenav: false,
+  query: ''
+}
 
 export interface BerniePageLayout {
   editable: boolean;
@@ -11,19 +19,7 @@ export interface BerniePageLayout {
   isTouched: Function;
 };
 
-export interface HeroesDashboardLayout {
-  heroSearchTerm: string
-}
-
-export interface Layout {
-  booksPage: BooksPageLayout;
-  berniePage: BerniePageLayout;
-  heroesDashboardPage: HeroesDashboardLayout;
-  msg: string;
-  actionTypes: any;
-}
-
-export const initialBerniePage: BerniePageLayout = {
+export const initialBerniePageLayout: BerniePageLayout = {
   editable: false,
   expanded: false,
   scrollY: 0,
@@ -40,20 +36,28 @@ export const initialBerniePage: BerniePageLayout = {
   }
 }
 
-export const initialHeroesDashboardPage = {
+export interface HeroesDashboardLayout {
+  heroSearchTerm: string
+}
+
+export const initialHeroesDashboardPageLayout = {
   heroSearchTerm: ''
 }
 
+export interface Layout {
+  booksPage: BooksPageLayout;
+  berniePage: BerniePageLayout;
+  heroesDashboardPage: HeroesDashboardLayout;
+  msg: string;
+  // actionTypes: any;
+}
 
-export function initialLayout(vals: any = {}, entityTypeName?: string, actionNames?: any, initialEntity?): Layout {
-
+export function initialLayout(actionNames: any) {
   return {
-    booksPage: {
-      showSidenav: false
-    },
-    berniePage: initialBerniePage,
-    heroesDashboardPage: initialHeroesDashboardPage,
+    booksPage: initialBooksPageLayout,
+    berniePage: initialBerniePageLayout,
+    heroesDashboardPage: initialHeroesDashboardPageLayout,
     msg: '',
-    actionTypes: getActionTypes(entityTypeName, actionNames),
+    // actionTypes: getActionTypes(slices.LAYOUT, actionNames)
   }
 }

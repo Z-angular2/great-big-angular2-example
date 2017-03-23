@@ -9,4 +9,4 @@ import * as entityActions from '../entity/entity.actions';
 export * from '../entity/entity.actions';
 
 // Action types
-export type Actions = entityActions.Actions<Note>;
+export type Actions = entityActions.ActionClasses<Note>;

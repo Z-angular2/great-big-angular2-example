@@ -1,6 +1,22 @@
 import { Action } from '@ngrx/store';
+
 import { Book } from './book.model';
+import * as entityActions from '../entity/entity.actions';
 import { type } from '../util';
+
+// Special actions
+
+// Entity actions
+export * from '../entity/entity.actions';
+
+// Action types
+export type Actions = entityActions.ActionClasses<Book>;
+
+
+
+
+// import { Action } from '@ngrx/store';
+// import { type } from '../util';
 
 /**
  * For each action type in an action group, make a simple
@@ -10,12 +26,12 @@ import { type } from '../util';
  * literal types and runs a simple check to guarantee all
  * action types in the application are unique.
  */
-export const ActionTypes = {
-  SEARCH: type('[Book] Search'),
-  SEARCH_COMPLETE: type('[Book] Search Complete'),
-  LOAD: type('[Book] Load'),
-  SELECT: type('[Book] Select'),
-};
+// export const ActionTypes = {
+//   SEARCH: type('[Book] Search'),
+//   SEARCH_COMPLETE: type('[Book] SearchComplete'),
+//   LOAD: type('[Book] Load'),
+//   SELECT: type('[Book] Select'),
+// };
 
 
 /**
@@ -25,36 +41,23 @@ export const ActionTypes = {
  *
  * See Discriminated Unions: https://www.typescriptlang.org/docs/handbook/advanced-types.html#discriminated-unions
  */
-export class SearchAction implements Action {
-  type = ActionTypes.SEARCH;
+// export class SearchAction implements Action {
+//   type = ActionTypes.SEARCH;
 
-  constructor(public payload: string) { }
-}
+//   constructor(public payload: string) { }
+// }
 
-export class SearchCompleteAction implements Action {
-  type = ActionTypes.SEARCH_COMPLETE;
+// export class SearchComplete implements Action {
+//   type = ActionTypes.SEARCH_COMPLETE;
 
-  constructor(public payload: Book[]) { }
-}
+//   constructor(public payload: Book[]) { }
+// }
 
-export class Load implements Action {
-  type = ActionTypes.LOAD;
-
-  constructor(public payload: Book) { }
-}
-
-export class Select implements Action {
-  type = ActionTypes.SELECT;
-
-  constructor(public payload: string) { }
-}
 
 /**
  * Exxport a type alias of all actions in this action group
  * so that reducers can easily compose action types
  */
-export type Actions
-  = SearchAction
-  | SearchCompleteAction
-  | Load
-  | Select;
+// export type Actions
+//   = SearchAction
+//   | SearchComplete;

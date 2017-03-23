@@ -74,15 +74,15 @@ app.post('/api/auth/login',
   }
 );
 
-app.get('/api/claims', getRecords('claim'));
-app.get('/api/rebuttals', getRecords('rebuttal'));
-app.get('/api/claim-rebuttals', getRecords('claim-rebuttal'));
-app.get('/api/contacts', getRecords('contact'));
+app.get('/api/claim', getRecords('claim'));
+app.get('/api/rebuttal', getRecords('rebuttal'));
+app.get('/api/claimRebuttal', getRecords('claimRebuttal'));
+app.get('/api/contact', getRecords('contact'));
 app.post('/api/contact', saveARecord('contact'));
-app.get('/api/crises', getRecords('crisis'));
-app.get('/api/heroes', getRecords('hero'));
+app.get('/api/crisis', getRecords('crisis'));
+app.get('/api/hero', getRecords('hero'));
 app.get('/api/crisis/:id', getRecord('crisis'));
-app.get('/api/notes', getRecords('note'));
+app.get('/api/note', getRecords('note'));
 app.get('/api/users', getRecords('user'));
 app.post('/api/note', saveARecord('note'));
 app.post('/api/hero', saveARecord('hero'));

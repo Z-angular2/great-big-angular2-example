@@ -1,26 +1,27 @@
 import { createSelector } from 'reselect';
 
 import { Hero, initialHero } from './hero.model';
-import * as actions from './hero.actions';
+import { actions, ActionClasses } from './hero.actions';
 import { Entities, initialEntities } from '../entity/entity.model';
+import { slices } from '../util';
+import * as functions from '../entity/entity.functions';
+import { typeFor } from '../util';
 
-export function reducer(state: Entities<Hero> = initialEntities<Hero>({}, 'Hero', actions, initialHero),
-  action: actions.Actions): Entities<Hero> {
-
-  // console.log(JSON.stringify(action))
+export function reducer(state: Entities<Hero> = initialEntities<Hero>({}, slices.HERO, actions, initialHero),
+  action: ActionClasses): Entities<Hero> {
 
   switch (action.type) {
-    case state.actionTypes.Add:
-    case state.actionTypes.AddSuccess:
-    case state.actionTypes.LoadSuccess:
-      return state.addLoadEntity(action);
-    case state.actionTypes.Update:
-    case state.actionTypes.UpdateSuccess:
-      return state.updateEntity(action);
-    case state.actionTypes.Delete:
-      return state.deleteEntity(action);
-    case state.actionTypes.Select:
-      return state.selectEntity(action);
+    case typeFor(slices.HERO, actions.ADD):
+    case typeFor(slices.HERO, actions.ADD_SUCCESS):
+    case typeFor(slices.HERO, actions.LOAD_SUCCESS):
+      return functions.addLoadEntity<Hero>(state, <any>action);
+    case typeFor(slices.HERO, actions.UPDATE):
+    case typeFor(slices.HERO, actions.UPDATE_SUCCESS):
+      return functions.update<Hero>(state, <any>action);
+    case typeFor(slices.HERO, actions.DELETE):
+      return functions.deleteEntity<Hero>(state, <any>action);
+    case typeFor(slices.HERO, actions.SELECT):
+      return functions.selectEntity<Hero>(state, <any>action);
     default:
       return state;
   }

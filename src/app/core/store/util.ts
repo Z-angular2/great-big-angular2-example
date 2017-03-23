@@ -13,7 +13,7 @@ import { Action } from '@ngrx/store';
 export let typeCache: { [label: string]: boolean } = {};
 export function type<T>(label: T | ''): T {
   if (typeCache[<string>label]) {
-    throw new Error(`Action type "${label}" is not unqiue"`);
+    throw new Error(`Action type "${label}" is not unique"`);
   }
 
   typeCache[<string>label] = true;
@@ -21,40 +21,36 @@ export function type<T>(label: T | ''): T {
   return <T>label;
 }
 
-export function typeFor(entityName, actionName) {
-  return `[${entityName}] ${actionName}`
-}
-
-export function getActionTypes(entityName, actionNames) {
-  let actionTypes = {};
-  for (let actionName in actionNames) {
-    if (actionName === 'ActionNames') continue;
-    actionTypes[actionName] = typeFor(entityName, actionName);
+export let typeForCache: { [sliceName: string]: { [actionName: string]: string } } = {};
+export function typeFor(sliceName, actionName) {
+  if (typeForCache[sliceName] && typeForCache[sliceName][actionName]) {
+    return typeForCache[sliceName][actionName];
+  } else {
+    typeForCache[<string>sliceName] = {};
+    typeForCache[sliceName][actionName] = `[${sliceName}] ${actionName}`;
+    return typeForCache[sliceName][actionName]
   }
-  return actionTypes;
 }
 
-export const entityNames = {
-  BOOK: 'Book',
-  CRISIS: 'Crisis',
-  CLAIM: 'Claim',
-  CLAIM_REBUTTAL: 'ClaimRebuttal',
-  COLLECTION: 'Collection',
-  CONTACT: 'Contact',
-  HERO: 'Hero',
-  LAYOUT: 'Layout',
-  NOTE: 'Note',
-  REBUTTAL: 'Rebuttal'
-}
+// export function getActionTypes(entityName, actionNames) {
+//   let actionTypes = {};
+//   for (let actionName in actionNames) {
+//     if (actionName === 'ActionNames') continue;
+//     actionTypes[actionName] = typeFor(entityName, actionName);
+//   }
+//   return actionTypes;
+// }
 
-export class BaseAction<T> implements Action {
-  _name: string = 'BASE ACTION - THIS SHOULD NOT APPEAR. YOU MUST FIRST SET TYPE';
-  get type() {
-    return typeFor(this.entityName, this._name)
-  }
-  set type(type) {
-    this._name = type;
-  }
-  constructor(public payload: any, public entityName: string) { }
+export const slices = {
+  BOOK: 'book',
+  CRISIS: 'crisis',
+  CLAIM: 'claim',
+  CLAIM_REBUTTAL: 'claimRebuttal',
+  COLLECTION: 'collection',
+  CONTACT: 'contact',
+  HERO: 'hero',
+  LAYOUT: 'layout',
+  NOTE: 'note',
+  REBUTTAL: 'rebuttal',
+  SEARCH: 'search'
 }
-

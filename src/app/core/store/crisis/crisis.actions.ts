@@ -13,4 +13,4 @@ export class ResolveConflict implements Action {
 export * from '../entity/entity.actions';
 
 // Action types
-export type Actions = entityActions.Actions<Crisis> | ResolveConflict;
+export type ActionClassess = entityActions.ActionClasses<Crisis> | ResolveConflict;

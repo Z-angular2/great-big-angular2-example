@@ -12,8 +12,9 @@ import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
 
 import { GoogleBooksService } from './google-books.service';
-import * as book from './book.actions';
-
+import { slices } from '../util';
+import * as functions from '../id/id.functions';
+import { actions, ActionClasses } from '../search/search.actions';
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -34,24 +35,11 @@ import * as book from './book.actions';
 
 @Injectable()
 export class BookEffects {
-  constructor(private actions$: Actions, private googleBooks: GoogleBooksService) { }
-
+  constructor(private actions$: Actions,
+    private googleBooks: GoogleBooksService) { }
 
   @Effect()
-  search$: Observable<Action> = this.actions$
-    .ofType(book.ActionTypes.SEARCH)
-    .debounceTime(300)
-    .map(toPayload)
-    .switchMap(query => {
-      if (query === '') {
-        return empty();
-      }
+  protected search$ = functions.load$(this.actions$, slices.SEARCH,
+    actions, this.googleBooks, 'searchBooks');
 
-      const nextSearch$ = this.actions$.ofType(book.ActionTypes.SEARCH).skip(1);
-
-      return this.googleBooks.searchBooks(query)
-        .takeUntil(nextSearch$)
-        .map(books => new book.SearchCompleteAction(books))
-        .catch(() => of(new book.SearchCompleteAction([])));
-    });
 }

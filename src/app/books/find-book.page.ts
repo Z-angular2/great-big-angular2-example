@@ -6,7 +6,8 @@ import { Observable } from 'rxjs/Observable';
 import * as fromRoot from '../core/store';
 import * as book from '../core/store/book/book.actions';
 import { Book } from '../core/store/book/book.model';
-
+import * as idActions from '../core/store/id/id.actions';
+import { slices } from '../core/store/util';
 
 @Component({
   selector: 'bc-find-book-page',
@@ -28,6 +29,7 @@ export class FindBookPage {
   }
 
   search(query: string) {
-    this.store.dispatch(new book.SearchAction(query));
+    // this.store.dispatch(new book.SearchAction(query));
+    this.store.dispatch(new idActions.Load(slices.SEARCH, query))
   }
 }

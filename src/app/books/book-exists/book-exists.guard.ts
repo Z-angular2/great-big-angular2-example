@@ -16,6 +16,8 @@ import { of } from 'rxjs/observable/of';
 import { GoogleBooksService } from '../../core/store/book/google-books.service';
 import * as fromRoot from '../../core/store';
 import * as book from '../../core/store/book/book.actions';
+import * as entityActions from '../../core/store/entity/entity.actions';
+import { slices } from '../../core/store/util';
 
 
 /**
@@ -58,7 +60,7 @@ export class BookExistsGuard implements CanActivate {
    */
   hasBookInApi(id: string): Observable<boolean> {
     return this.googleBooks.retrieveBook(id)
-      .map(bookEntity => new book.Load(bookEntity))
+      .map(bookEntity => new entityActions.Load(slices.BOOK, bookEntity))
       .do(action => this.store.dispatch(action))
       .map(book => !!book)
       .catch(() => {

@@ -9,7 +9,7 @@ import { Contact } from '../core/store/contact/contact.model';
 import { User } from '../core/store/user/user.model';
 import * as actions from '../core/store/contact/contact.actions';
 import * as layout from '../core/store/layout/layout.actions';
-import { entityNames } from '../core/store/util'
+import { slices } from '../core/store/util';
 
 let uuid = require('uuid');
 
@@ -43,19 +43,19 @@ export class ContactPage implements OnInit {
   }
 
   nextContact() {
-    this.store.dispatch(new actions.Next());
+    this.store.dispatch(new actions.SelectNext<Contact>(slices.CONTACT));
   }
 
   newContact() {
-    this.store.dispatch(new actions.Add({
+    this.store.dispatch(new actions.Add(slices.CONTACT, {
       id: uuid.v1(),
       name: ''
-    }, entityNames.CONTACT));
+    }));
   }
 
   onSubmit() {
-    this.store.dispatch(new actions.Update(
-      this.contactForm.value, entityNames.CONTACT));
+    this.store.dispatch(new actions.Update(slices.CONTACT,
+      this.contactForm.value));
   }
 
 }

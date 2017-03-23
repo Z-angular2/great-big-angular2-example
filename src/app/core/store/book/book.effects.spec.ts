@@ -5,7 +5,7 @@ import { GoogleBooksService } from './google-books.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of'
 import 'rxjs/add/observable/throw'
-import { SearchAction, SearchCompleteAction } from './book.actions';
+import { SearchAction, SearchComplete } from './book.actions';
 import { Book } from './book.model';
 
 describe('BookEffects', () => {
@@ -33,14 +33,14 @@ describe('BookEffects', () => {
   }
 
   describe('search$', () => {
-    it('should return a new book.SearchCompleteAction, with the books, on success, after the de-bounce', fakeAsync(() => {
+    it('should return a new book.SearchComplete, with the books, on success, after the de-bounce', fakeAsync(() => {
       const book1 = { id: '111', volumeInfo: {} } as Book;
       const book2 = { id: '222', volumeInfo: {} } as Book;
       const books = [book1, book2];
 
       const {runner, bookEffects} = setup({ searchBooksReturnValue: Observable.of(books) });
 
-      const expectedResult = new SearchCompleteAction(books);
+      const expectedResult = new SearchComplete(books);
       runner.queue(new SearchAction('query'));
 
       let result = null;
@@ -51,10 +51,10 @@ describe('BookEffects', () => {
       expect(result).toEqual(expectedResult);
     }));
 
-    it('should return a new book.SearchCompleteAction, with an empty array, if the books service throws', fakeAsync(() => {
+    it('should return a new book.SearchComplete, with an empty array, if the books service throws', fakeAsync(() => {
       const {runner, bookEffects} = setup({ searchBooksReturnValue: Observable.throw(new Error()) });
 
-      const expectedResult = new SearchCompleteAction([]);
+      const expectedResult = new SearchComplete([]);
       runner.queue(new SearchAction('query'));
 
       let result = null;

@@ -10,16 +10,13 @@ import { combineLatest } from 'rxjs/observable/combineLatest';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import * as fromRoot from '../core/store';
-import * as claimActions from '../core/store/claim/claim.actions';
-import * as claimRebuttalActions from '../core/store/claim-rebuttal/claim-rebuttal.actions';
-import * as rebuttalActions from '../core/store/rebuttal/rebuttal.actions';
 import { BerniePageLayout } from '../core/store/layout/layout.model';
 import { Claim, initialClaim } from '../core/store/claim/claim.model';
 import { Rebuttal, initialRebuttal } from '../core/store/rebuttal/rebuttal.model';
 import { ClaimRebuttal, initialClaimRebuttal } from '../core/store/claim-rebuttal/claim-rebuttal.model';
-import * as claim from '../core/store/claim/claim.actions';
-import * as layout from '../core/store/layout/layout.actions';
-import { entityNames } from '../core/store/util'
+import * as entityActions from '../core/store/entity/entity.actions';
+import * as branchActions from '../core/store/layout/layout.actions';
+import { slices } from '../core/store/util';
 
 let uuid = require('uuid');
 
@@ -73,20 +70,26 @@ export class BerniePage {
   }
 
   toggleEditable() {
-    this.store.dispatch(new claim.ToggleEditable(!this.editable));
+    this.store.dispatch(new branchActions.Update(slices.LAYOUT, ['berniePage', 'editable'], !this.editable));
   }
 
   toggleExpanded() {
-    this.store.dispatch(new claim.ToggleAllRebuttals(!this.expanded));
+    this.store.dispatch(new branchActions.Update(slices.LAYOUT, ['berniePage', 'expanded'], !this.expanded));
+    this.store.dispatch(new entityActions.UpdateEach(slices.CLAIM, { expanded: !this.expanded }));
   }
 
   addClaim() {
     let newClaim = prompt("New claim");
     if (newClaim) {
-      this.store.dispatch(new claimActions.Add(Object.assign({}, initialClaim, {
+      this.store.dispatch(new entityActions.Add(slices.CLAIM, {
         id: uuid.v1(),
         name: newClaim
-      }), entityNames.CLAIM))
+      }));
+
+      // this.store.dispatch(new claimActions.Add(Object.assign({}, initialClaim, {
+      //   id: uuid.v1(),
+      //   name: newClaim
+      // }), slices.CLAIM))
     }
   }
 
@@ -101,34 +104,34 @@ export class BerniePage {
     // and dispatch actions to each respective reducer
     let newRebuttal = initialRebuttal({ id: uuid.v1(), editing: true, isNew: true });
     let newClaimRebuttal = initialClaimRebuttal({ id: uuid.v1(), claimId: claim.id, rebuttalId: newRebuttal.id });
-    this.store.dispatch(new rebuttalActions.Add(newRebuttal, entityNames.REBUTTAL));
-    this.store.dispatch(new claimRebuttalActions.AssociateRebuttal(newClaimRebuttal))
+    this.store.dispatch(new entityActions.Add(slices.REBUTTAL, newRebuttal));
+    this.store.dispatch(new entityActions.Add(slices.REBUTTAL, newClaimRebuttal))
   }
-
   toggleRebuttals(claim: Claim) {
-    this.store.dispatch(new claimActions.ToggleRebuttals(claim));
+    this.store.dispatch(new entityActions.Add(slices.CLAIM, { id: claim.id, expanded: !claim.expanded }));
   }
 
-  cancelRebuttal({claim, rebuttal}) {
+  cancelRebuttal({claimRebuttalId, rebuttal}) {
     if (rebuttal.isNew) {
       // TODO: delete the rebuttal record if necessary
-      this.store.dispatch(new claimRebuttalActions.DisassociateRebuttal({ claim, rebuttal }));
+      this.store.dispatch(new entityActions.Delete(slices.CLAIM_REBUTTAL, claimRebuttalId));
     } else {
-      this.store.dispatch(new rebuttalActions.CancelRebuttal(rebuttal));
+      this.store.dispatch(new entityActions.Update<Rebuttal>(slices.REBUTTAL, { id: rebuttal.id, editing: false }));
     }
   }
 
-  saveRebuttal({id, newRebuttal}) {
-    this.store.dispatch(new rebuttalActions.SaveRebuttal(newRebuttal));
+  saveRebuttal(newRebuttal) {
+    this.store.dispatch(new entityActions.Update<Rebuttal>(slices.REBUTTAL, Object.assign({}, newRebuttal, { editing: false })));
   }
 
   makeRebuttalEditable(rebuttal: Rebuttal) {
-    this.store.dispatch(new rebuttalActions.MakeRebuttalEditable(rebuttal));
+    this.store.dispatch(new entityActions.Update<Rebuttal>(slices.REBUTTAL, { id: rebuttal.id, editing: true }));
   }
 
   reorderRebuttals(claim, event) {
     let rebuttalIds = Array.prototype.slice.call(event.srcElement.children).filter(li => li.id).map(li => li.id);
-    this.store.dispatch(new claimRebuttalActions.ReorderRebuttals({ claim, rebuttalIds }));
+    this.store.dispatch(new entityActions.Update(slices.CLAIM, Object.assign({}, { id: claim.id, rebuttalsReordered: true, rebuttalIds })));
+    this.store.dispatch(new entityActions.UpdateSlice(slices.CLAIM_REBUTTAL, { ids: rebuttalIds.map((id, index) => index) }));
   }
 
   reorderClaims(event) {
@@ -138,7 +141,7 @@ export class BerniePage {
 
     try {
       let claimIds = Array.prototype.slice.call(event.srcElement.children).map(li => li.children[0].children[0].children[0].id);
-      this.store.dispatch(new claimActions.ReorderClaims(claimIds));
+      this.store.dispatch(new branchActions.Update(slices.CLAIM, ['ids'], claimIds));
     } catch (err) {
 
     }
